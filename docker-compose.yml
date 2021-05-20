@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+
+  audio:
+    image: balenablocks/audio
+    privileged: true
+    ports:
+      - 4317:4317
+
+  noise-generator:
+    build: ./generator
+    ports:
+      - 80:3000

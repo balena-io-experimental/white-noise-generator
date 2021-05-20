@@ -1,0 +1,35 @@
+FROM balenalib/%%BALENA_MACHINE_NAME%%-node:12-build as build
+WORKDIR /usr/src
+
+# Install container dependencies
+ENV PULSE_SERVER=tcp:audio:4317
+RUN install_packages sox libsox-fmt-pulse
+
+# Install node dependencies
+COPY package*.json ./
+RUN npm install
+
+#dev-cmd-live=npm run watch
+
+# Copy source code
+COPY src ./src
+COPY tsconfig.json .
+
+# Build -- for next stage
+RUN npm run build
+
+FROM balenalib/%%BALENA_MACHINE_NAME%%-node:12-run
+WORKDIR /usr/src
+
+
+
+# Container dependencies
+ENV PULSE_SERVER=tcp:audio:4317
+RUN install_packages sox libsox-fmt-pulse
+
+# Node dependencies
+COPY package*.json ./
+COPY --from=build /usr/src/build ./build
+RUN npm install --production
+
+CMD [ "npm", "start" ]

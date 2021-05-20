@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>White Noise Generator</title>
+  <link rel="shortcut icon" href="favicon.png">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="header">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#"><img style="width: 2.5rem; height: auto;" src="logo.png"></a>
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" aria-expanded="false">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse" id="collapsibleNavbar">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item navbar-brand">
+              <a class="nav-link active" href="https://github.com/balenalabs-incubator/white-noise-generator">
+                <i class="fa fa-github" style="font-size: 150%"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <section class="jumbotron text-center" style="background-color: white;">
+    <div class="container">
+      <h1 class="jumbotron-heading">White Noise Generator</h1>
+      <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
+      <p>
+        Noise type:
+        <select class="form-select" id="noise-type" required="">
+          <option value="ocean">Ocean</option>
+          <option value="white">White</option>
+        </select>
+      </p>
+      <p>
+        <label for="volume-range" class="form-label">Volume</label>
+        <input type="range" class="form-range" id="volume-range">
+      </p>
+      <p>
+        <button onclick="start()" type="button" class="btn btn-success my-2">Start</button>
+        <button onclick="stop()" type="button" class="btn btn-danger my-2">Stop</button>
+      </p>
+    </div>
+  </section>
+
+  <footer id="footer" class="footer">
+    <div class="container">
+      <p>an open source project by
+        <a href="https://www.balena.io/" > <img style="width: 6rem; height: auto;" src="./footer-logo.svg"> </a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    init()
+    async function init() {
+      let response = await fetch('/volume')
+      if (response.ok) {
+        let volume = await response.json()
+        slider.value = volume
+      }
+    }
+    async function start () {
+      let type = document.getElementById('noise-type')
+      await fetch('/start', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ type: type.value })
+      })
+    }
+    async function stop () {
+      await fetch('/stop', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    }
+
+    var slider = document.getElementById("volume-range")
+    slider.oninput = async function () {
+      await fetch('/volume', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ volume: this.value })
+      })
+    }
+  </script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+</body>
+</html>
