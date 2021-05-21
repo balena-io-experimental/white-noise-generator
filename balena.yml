@@ -1,0 +1,31 @@
+name: white-noise-generator
+type: sw.application
+description: >-
+  Build your own white noise machine using your Raspbery Pi or similar device!
+post-provisioning: >-
+  ## Usage instructions
+
+  Once your application has started visit `http://balena.local` or your device's local IP address to access the control dashboard. You'll be able to start and stop the white noise, set the volume and more!
+assets:
+  repository:
+    type: blob.asset
+    data:
+      url: 'https://github.com/balenalabs-incubator/white-noise-generator'
+  logo:
+    type: blob.asset
+    data:
+      url: >-
+        https://raw.githubusercontent.com/balenalabs-incubator/white-noise-generator/master/logo.png
+data:
+  applicationEnvironmentVariables:
+    - NOISE_VOLUME: 40
+    - NOISE_TYPE: 'ocean'
+    - AUDIO_OUTPUT: AUTO
+  defaultDeviceType: raspberry-pi
+  supportedDeviceTypes:
+    - raspberry-pi
+    - raspberry-pi2
+    - raspberrypi3
+    - raspberrypi4-64
+    - fincm3
+    - intel-nuc
