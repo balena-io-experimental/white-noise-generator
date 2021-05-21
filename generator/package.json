@@ -4,9 +4,10 @@
   "description": "",
   "main": "build/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf build",
     "watch": "nodemon --watch src --ignore tests --ext js,ts,json --exec node -r ts-node/register/transpile-only src/index.ts",
-    "build": "tsc --project tsconfig.json"
+    "build": "npm run clean && tsc --project tsconfig.json && cp -R src/ui build/ui && cp -R src/audio build/audio",
+    "start": "node build/index.js"
   },
   "author": "Tomás Migone <tomas@balena.io>",
   "license": "MIT",

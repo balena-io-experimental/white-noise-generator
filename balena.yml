@@ -5,7 +5,7 @@ description: >-
 post-provisioning: >-
   ## Usage instructions
 
-  Once your application has started visit `http://balena.local` or your device's local IP address to access the control dashboard. You'll be able to start and stop the white noise, set the volume and more!
+  After flashing your device allow some time for the application to download. Once your application has started visit `http://balena.local` or your device's local IP address to access the control dashboard. You'll be able to start and stop the white noise, set the volume and more!
 assets:
   repository:
     type: blob.asset
