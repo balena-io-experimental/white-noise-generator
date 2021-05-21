@@ -5,7 +5,8 @@
   "main": "build/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "nodemon --watch src --ignore tests --ext js,ts,json --exec node -r ts-node/register/transpile-only src/index.ts"
+    "watch": "nodemon --watch src --ignore tests --ext js,ts,json --exec node -r ts-node/register/transpile-only src/index.ts",
+    "build": "tsc --project tsconfig.json"
   },
   "author": "Tomás Migone <tomas@balena.io>",
   "license": "MIT",
